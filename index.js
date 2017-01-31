@@ -4,17 +4,16 @@ var fontManager = require('font-manager');
 var fonts = fontManager.getAvailableFontsSync();
 
 
-console.log(JSON.stringify(fonts,0,2))
-
-
-const SystemFonts = require('system-font-families').default;
+//console.log(JSON.stringify(fonts,0,2))
+const SystemFonts = require('./app/lib/findfonts');
 const systemFonts = new SystemFonts();
 const fontList = systemFonts.getFontsSync();
-console.log(JSON.stringify(fontList,0,2))
-systemFonts.getFonts().then(
-  (res) => {
-    // res is an array of font family strings
-    // do something with the response
-    console.log(JSON.stringify(res,0,2))
-  }
-);
+//console.log(fontList)
+var font = require('./app/lib/font');
+/*
+let fontList = font.listFonts();
+console.log(fontList)
+*/
+
+var a = font.load('Wingdings.ttf')
+console.log(a.tables[1].contents())

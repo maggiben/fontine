@@ -12,9 +12,10 @@ const env = {
 };
 
 export default {
-  debug: true,
+  //debug: true,
+  context: path.resolve(__dirname, 'app'),
   entry: {
-    'bundle': ['babel-polyfill', './app/index'],
+    'bundle': ['./index.jsx'],
   },
   output: {
     path: path.resolve('dist'),
@@ -24,8 +25,7 @@ export default {
   target: 'electron',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env)
     }),
@@ -61,16 +61,17 @@ export default {
     })
   ],
   resolve: {
-    extensions: [ '', '.js', '.jsx', '.coffee', '.less', '.ttf', '.eot', '.woff' ],
-    moduleDirectories: [
-      'node_modules'
+    //extensions: [ '', '.js', '.jsx', '.coffee', '.less', '.ttf', '.eot', '.woff' ],
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, './app/lib')
     ]
   },
-  resolveLoader: {
+  /*resolveLoader: {
     moduleDirectories: [ 'node_modules' ]
-  },
+  },*/
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.html$/,
         loader: "file?name=[name].[ext]",
@@ -81,31 +82,51 @@ export default {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 30000,
+            name: '[name]-[hash].[ext]'
+          }
+        }]
+        //loaders: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
       },
       {
         test: /\.css$/,
-        loaders: [
+        use: [
           'style-loader',
-          'css-loader?importLoaders=1',
+          'css-loader',
           'postcss-loader'
         ]
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file?name=public/fonts/[name].[ext]'
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 30000,
+            minetype: 'application/font-woff'
+          }
+        }]
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          'file-loader'
+        ]
       },
       {
         test: /\.mp3$/,
         loader: "file?name=[name].[ext]",
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loaders: [ 'react-hot', 'babel-loader' ]
+        //use: [ 'babel-loader' ]
+        use: [ 'react-hot', 'babel-loader' ]
       }
     ]
-  },
+  }/*,
   postcss: function (webpack) {
     return [
       require("postcss-import")({
@@ -127,5 +148,5 @@ export default {
       //require("postcss-browser-reporter")(),
       //require("postcss-reporter")(),
     ]
-  }
+  }*/
 }
