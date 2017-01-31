@@ -92,6 +92,10 @@ export default {
         ]
       },
       {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file?name=public/fonts/[name].[ext]'
+      },
+      {
         test: /\.mp3$/,
         loader: "file?name=[name].[ext]",
       },

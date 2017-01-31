@@ -3,18 +3,10 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, Redirect, hashHistory, browserHistory, IndexRoute } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { App, HomePage, NotFound, About } from './containers';
-//import routes from './routes';
+import routes from './routes';
+import './assets/css/photon.css';
 
 render(
-  //<Router history={browserHistory} routes={routes} />,
-  <Router history={browserHistory}>
-    <Route path="/" component={App} name="App">
-      <IndexRoute component={HomePage} name='HomePage'/>
-      <Route path="/about" component={About} />
-    </Route>
-    <Redirect from="/*" to="/" />
-    <Route path="*" component={NotFound} />
-  </Router>,
+  <Router history={browserHistory} routes={routes} />,
   document.getElementById('app')
 );

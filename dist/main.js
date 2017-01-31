@@ -16,7 +16,6 @@ const config = JSON.parse(fs.readFileSync("package.json"));
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -46,7 +45,7 @@ class ElectonApplication {
       minWidth: 800,
       minHeight: 400,
       center: true,
-      frame: false,
+      frame: true,
       icon: makeIcon('icon.png')
     });
 
