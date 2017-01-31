@@ -1,0 +1,7 @@
+{
+  "name": "fontine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bootstrapper.js",
+  "js-flags": "--harmony"
+}

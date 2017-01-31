@@ -1,1 +1,8 @@
+.DS_Store
 node_modules/
+npm-debug.log
+# Dont track webpack stuff
+dist/[0-9]*.*.js
+dist/[0-9]*.*.json
+dist/bundle.js
+dist/index.html

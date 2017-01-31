@@ -14,7 +14,7 @@ const env = {
 export default {
   debug: true,
   entry: {
-    'bundle': ['babel-polyfill', './client/router'],
+    'bundle': ['babel-polyfill', './app/index'],
   },
   output: {
     path: path.resolve('dist'),
