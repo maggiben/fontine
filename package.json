@@ -1,0 +1,14 @@
+{
+  "name": "fontine",
+  "version": "1.0.0",
+  "description": "desktop font viewer and manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Benjamin Maggi",
+  "license": "MIT",
+  "dependencies": {
+    "font-manager": "^0.2.2"
+  }
+}
