@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.15.3",
+    "babel-runtime": "^6.22.0",
     "classnames": "^2.2.5",
     "electron": "^1.4.13",
     "electron-window-state": "^4.0.1",
@@ -21,6 +22,8 @@
     "fontinfo": "^0.3.0",
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
+    "opentype": "git+https://github.com/bramstein/opentype.git",
+    "opentype.js": "^0.6.9",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.2",

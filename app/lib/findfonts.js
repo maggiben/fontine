@@ -7,6 +7,8 @@ import fontInfo from 'fontInfo';
 const fs = require('fs');
 const path = require('path');
 const fontInfo = require('fontinfo');
+const opentype = require('opentype.js');
+const opentype2 = require('opentype/src/opentype.js');
 
 const getPlatform = () => (process.platform === 'darwin') ? 'osx' : (/win/.test(process.platform) ? 'windows' : 'linux');
 
@@ -107,13 +109,30 @@ const SystemFonts = function() {
         });
     };
 
+    this.getFontInfo = (callback) => {
+        fontFiles = ['/Library/Fonts/AppleGothic.ttf', '/Library/Fonts/AppleMyungjo.ttf'];
+
+        opentype.load('/Library/Fonts/AppleGothic.ttf', function(err, font) {
+            if (err) {
+                alert('Could not load font: ' + err);
+            } else {
+                // Use your font here.
+                console.log(font);
+            }
+        });
+    }
+
     this.getFontsSync = () => {
         //fontFiles = ['/Library/Fonts/AppleGothic.ttf', '/Library/Fonts/AppleMyungjo.ttf'];
         return fontFiles
+            .filter(file => {
+              return file.match(/ttf/i);
+            })
             .reduce((arr, file) => {
                 let data;
                 try {
                     data = fontInfo(file);
+                    //data.opentype2 = opentype2(fs.readFileSync(file));
                 } catch(error) {
                     console.log('error:', error, file)
                     return arr;

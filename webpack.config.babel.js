@@ -12,23 +12,29 @@ const env = {
 };
 
 export default {
-  //debug: true,
   context: path.resolve(__dirname, 'app'),
   entry: {
-    'bundle': ['./index.jsx'],
+    'bundle': ['babel-polyfill','./index.jsx'],
+    'vendor': ['react']
   },
   output: {
     path: path.resolve('dist'),
     filename: '[name].js'
   },
   devtool: 'inline-source-map',
-  target: 'electron',
+  target: 'electron-renderer',
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor.bundle.js'
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(env)
+      'process.env.BABEL_ENV': JSON.stringify('client')
     }),
+    new webpack.NamedModulesPlugin(),
     new HtmlwebpackPlugin({
       template: require('html-webpack-template'),
       title: 'App',
@@ -53,7 +59,7 @@ export default {
       // see: https://nodejs.org/api/child_process.html#child_process_child_process_spawnsync_command_args_options
       // optional
       options: {
-        env: {NODE_ENV: "development"}
+        env: { NODE_ENV: JSON.stringify(env) }
       }
     }),
     new WebpackCleanupPlugin({
@@ -116,37 +122,13 @@ export default {
         ]
       },
       {
-        test: /\.mp3$/,
-        loader: "file?name=[name].[ext]",
-      },
-      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        //use: [ 'babel-loader' ]
-        use: [ 'react-hot', 'babel-loader' ]
+        use: [
+          'react-hot-loader',
+          'babel-loader'
+        ]
       }
     ]
-  }/*,
-  postcss: function (webpack) {
-    return [
-      require("postcss-import")({
-        root: process.cwd()
-      }),
-      require("postcss-url")(),
-      require("postcss-cssnext")({
-        browsers: [
-          'ie >= 10',
-          'Safari >= 7',
-          'ff >= 28',
-          'Chrome >= 34'
-        ]
-      }),
-      // add your "plugins" here
-      // ...
-      // and if you want to compress,
-      // just use css-loader option that already use cssnano under the hood
-      //require("postcss-browser-reporter")(),
-      //require("postcss-reporter")(),
-    ]
-  }*/
+  }
 }

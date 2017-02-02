@@ -46,7 +46,12 @@ class ElectonApplication {
       minHeight: 400,
       center: true,
       frame: true,
-      icon: makeIcon('icon.png')
+      icon: makeIcon('icon.png'),
+      webPreferences: {
+        //javascript: false,
+        experimentalFeatures: true,
+        scrollBounce: true,
+      }
     });
 
     this.mainWindow.loadURL(`file://${__dirname}/index.html`);
