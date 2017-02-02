@@ -8,7 +8,6 @@ const fs = require('fs');
 const path = require('path');
 const fontInfo = require('fontinfo');
 const opentype = require('opentype.js');
-const opentype2 = require('opentype/src/opentype.js');
 
 const getPlatform = () => (process.platform === 'darwin') ? 'osx' : (/win/.test(process.platform) ? 'windows' : 'linux');
 
@@ -132,7 +131,6 @@ const SystemFonts = function() {
                 let data;
                 try {
                     data = fontInfo(file);
-                    //data.opentype2 = opentype2(fs.readFileSync(file));
                 } catch(error) {
                     console.log('error:', error, file)
                     return arr;

@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+main.window {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.page-content {
+  /* grow and shrink vertically */
+  flex: 1 1 auto;
+
+  /* new horizontal flex container */
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar-left {
+  /* should stay fixed except for resizing  */
+  flex: 0 0 auto;
+  height: 100%;
+  background: #b8b8b8;
+  overflow: auto;
+  border-right: 1px solid gray;
+}
+
+.splitter {
+  /* should stay fixed size */
+  flex: 0 0 auto;
+
+  width: 15px;
+  cursor: col-resize;
+  background: #535353 url(http://assets.codepen.io/assets/editor/handle-horz.png) center center no-repeat;
+}
+
+.main-content {
+  /* grow & shrink horizontally */
+  flex: 1 1 auto;
+  background: white;
+  padding: 20px;
+}
+
+.sidebar-left {
+  & .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    & ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      & li {
+        &.active {
+          background-color: #d23035;
+          color: white;
+        }
+        & .name {
+          padding-left: 20px;
+        }
+      }
+    }
+  }
+}
+
+
+
+/* RESIZR */
+.Resizer {
+  background: #000;
+  opacity: .2;
+  z-index: 1;
+  box-sizing: border-box;
+  background-clip: padding-box;
+}
+
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+}
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%;
+}
+
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+Resizer.disabled {
+  cursor: not-allowed;
+}
+Resizer.disabled:hover {
+  border-color: transparent;
+}
