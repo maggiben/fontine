@@ -17,7 +17,7 @@ const Sidebar = () =>
         </ul>
       </li>
       <li>
-        <span>Collections</span>
+        <span className="group">Collections</span>
         <ul>
           <li><span className="name">Fixed Width</span></li>
           <li><span className="name">Fun</span></li>
@@ -36,13 +36,23 @@ const Body = () =>
   </div>
 
 export default function HomePage () {
-  return (
+  /*return (
     <main className="window">
-      <SplitPane split="vertical" minSize={180}>
-        <Sidebar />
-        <Body />
-      </SplitPane>
-      <footer></footer>
+      <Sidebar />
+      <Body />
     </main>
+  );*/
+  return (
+    <div id="container">
+      <div id="header">Header</div>
+      <div id="main">
+        <Sidebar />
+        <div id="content">
+          <div id="list">
+            <Body />
+           </div>
+        </div>
+      </div>
+    </div>
   );
 }

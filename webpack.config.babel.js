@@ -14,7 +14,7 @@ const env = {
 export default {
   context: path.resolve(__dirname, 'app'),
   entry: {
-    'bundle': ['babel-polyfill','./index.jsx'],
+    'bundle': ['babel-polyfill', './index.jsx'],
     'vendor': ['react']
   },
   output: {
@@ -63,7 +63,7 @@ export default {
       }
     }),
     new WebpackCleanupPlugin({
-      exclude: ["package.json", "main.js", "index.html", 'bootstrapper.js'],
+      exclude: ['window.js', "package.json", "main.js", "index.html", 'bootstrapper.js'],
     })
   ],
   resolve: {
