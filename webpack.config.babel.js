@@ -12,23 +12,29 @@ const env = {
 };
 
 export default {
-  debug: true,
+  context: path.resolve(__dirname, 'app'),
   entry: {
-    'bundle': ['babel-polyfill', './app/index'],
+    'bundle': ['babel-polyfill', './index.jsx'],
+    'vendor': ['react']
   },
   output: {
     path: path.resolve('dist'),
     filename: '[name].js'
   },
   devtool: 'inline-source-map',
-  target: 'electron',
+  target: 'electron-renderer',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(env)
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor.bundle.js'
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.BABEL_ENV': JSON.stringify('client')
+    }),
+    new webpack.NamedModulesPlugin(),
     new HtmlwebpackPlugin({
       template: require('html-webpack-template'),
       title: 'App',
@@ -53,24 +59,25 @@ export default {
       // see: https://nodejs.org/api/child_process.html#child_process_child_process_spawnsync_command_args_options
       // optional
       options: {
-        env: {NODE_ENV: "development"}
+        env: { NODE_ENV: JSON.stringify(env) }
       }
     }),
     new WebpackCleanupPlugin({
-      exclude: ["package.json", "main.js", "index.html", 'bootstrapper.js'],
+      exclude: ['window.js', "package.json", "main.js", "index.html", 'bootstrapper.js'],
     })
   ],
   resolve: {
-    extensions: [ '', '.js', '.jsx', '.coffee', '.less', '.ttf', '.eot', '.woff' ],
-    moduleDirectories: [
-      'node_modules'
+    //extensions: [ '', '.js', '.jsx', '.coffee', '.less', '.ttf', '.eot', '.woff' ],
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, './app/lib')
     ]
   },
-  resolveLoader: {
+  /*resolveLoader: {
     moduleDirectories: [ 'node_modules' ]
-  },
+  },*/
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.html$/,
         loader: "file?name=[name].[ext]",
@@ -81,51 +88,47 @@ export default {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 30000,
+            name: '[name]-[hash].[ext]'
+          }
+        }]
+        //loaders: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
       },
       {
         test: /\.css$/,
-        loaders: [
+        use: [
           'style-loader',
-          'css-loader?importLoaders=1',
+          'css-loader',
           'postcss-loader'
         ]
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file?name=public/fonts/[name].[ext]'
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 30000,
+            minetype: 'application/font-woff'
+          }
+        }]
       },
       {
-        test: /\.mp3$/,
-        loader: "file?name=[name].[ext]",
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: [ 'react-hot', 'babel-loader' ]
-      }
-    ]
-  },
-  postcss: function (webpack) {
-    return [
-      require("postcss-import")({
-        root: process.cwd()
-      }),
-      require("postcss-url")(),
-      require("postcss-cssnext")({
-        browsers: [
-          'ie >= 10',
-          'Safari >= 7',
-          'ff >= 28',
-          'Chrome >= 34'
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          'file-loader'
         ]
-      }),
-      // add your "plugins" here
-      // ...
-      // and if you want to compress,
-      // just use css-loader option that already use cssnano under the hood
-      //require("postcss-browser-reporter")(),
-      //require("postcss-reporter")(),
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          'react-hot-loader',
+          'babel-loader'
+        ]
+      }
     ]
   }
 }
