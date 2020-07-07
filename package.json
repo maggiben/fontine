@@ -16,7 +16,7 @@
     "axios": "^0.15.3",
     "babel-runtime": "^6.22.0",
     "classnames": "^2.2.5",
-    "electron": "^1.4.13",
+    "electron": "^9.1.0",
     "electron-window-state": "^4.0.1",
     "font-manager": "^0.2.2",
     "fontinfo": "^0.3.0",
